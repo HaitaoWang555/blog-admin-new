@@ -23,6 +23,9 @@ Object.keys(filters).forEach(key => {
 import waves from '@/directive/waves/waves.js' // waves directive
 Vue.directive('waves', waves)
 
+import { tips } from '@/utils/tips'
+Vue.prototype.$tips = tips
+
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
 
 Vue.config.productionTip = false
