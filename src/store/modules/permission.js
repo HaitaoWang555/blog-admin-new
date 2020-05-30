@@ -20,12 +20,7 @@ function hasPermission(menus, route) {
       }
       return true
     } else {
-      route.sort = 0
-      if (route.hidden !== undefined && route.hidden === true) {
-        return true
-      } else {
-        return false
-      }
+      return false
     }
   } else {
     return true

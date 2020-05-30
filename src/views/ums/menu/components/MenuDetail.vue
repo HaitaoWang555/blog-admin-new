@@ -25,7 +25,7 @@
       <el-form-item label="前端名称：" prop="name">
         <el-input v-model="menu.name" />
       </el-form-item>
-      <el-form-item label="前端图标：" prop="icon">
+      <el-form-item label="前端图标：">
         <el-input v-model="menu.icon" style="width: 80%" />
         <svg-icon style="margin-left: 8px" :icon-class="menu.icon" />
       </el-form-item>
@@ -76,10 +76,6 @@ export default {
         ],
         name: [
           { required: true, message: '请输入前端名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
-        ],
-        icon: [
-          { required: true, message: '请输入前端图标', trigger: 'blur' },
           { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
         ]
       }

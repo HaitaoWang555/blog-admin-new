@@ -48,6 +48,40 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
+    path: '/cms',
+    component: Layout,
+    redirect: '/cms/article',
+    name: 'article',
+    meta: { title: '文章', icon: 'cms-article' },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/cms/article/list'),
+        name: 'list',
+        meta: { itle: '文章列表', icon: 'cms-list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/cms/article/create'),
+        name: 'create',
+        meta: { title: '创建文章', icon: 'cms-create' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        component: () => import('@/views/cms/article/edit'),
+        meta: { title: '编辑文章', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'metas',
+        component: () => import('@/views/cms/metas/index'),
+        name: 'metas',
+        meta: { itle: '标签与分类', icon: 'cms-list' }
+      }
+    ]
+  },
+  {
     path: '/ums',
     component: Layout,
     redirect: '/ums/admin',
