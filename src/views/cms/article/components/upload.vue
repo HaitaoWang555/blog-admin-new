@@ -41,7 +41,7 @@
 </template>
 
 <script>
-// import { uploadArticle } from '@/api/public'
+import { uploadArticle } from '@/api/article'
 
 export default {
   name: 'Article',
@@ -108,11 +108,11 @@ export default {
         })
       }
       formData.append(option.filename, option.file, option.file.name)
-      // return uploadArticle(formData, option).then(res => {
-      //   this.loading = false
-      //   if (!res) return
-      //   this.handleSuccess(res)
-      // })
+      return uploadArticle(formData, option).then(res => {
+        this.loading = false
+        if (!res) return
+        this.handleSuccess(res)
+      })
     },
     handleChange(file, fileList) {
       this.fileList = fileList.slice(-1)
@@ -129,7 +129,7 @@ export default {
       }
     },
     handleSuccess(res) {
-      if (res.success) {
+      if (res.code === 200) {
         this.$tips(res)
         this.close()
         this.change(res)

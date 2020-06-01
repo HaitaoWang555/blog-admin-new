@@ -13,7 +13,7 @@ require('highlight.js/styles/github.css')
 import Editor from 'tui-editor'
 import defaultOptions from './default-options'
 
-import { uploadMd } from '@/api/public'
+import { uploadImgInMd } from '@/api/article'
 
 export default {
   name: 'MarddownEditor',
@@ -126,7 +126,7 @@ export default {
       if (!this.beforeUpload(file)) return
       const data = new FormData()
       data.append('file', file)
-      return uploadMd(data).then(res => {
+      return uploadImgInMd(data).then(res => {
         if (res && res.data) callback(res.data, 'image')
       })
     },
@@ -152,5 +152,11 @@ export default {
 }
 .tui-editor-defaultUI .te-mode-switch-section {
   height: 30px;
+}
+.te-md-splitter {
+  width: 50%!important;
+}
+.te-md-container .te-preview {
+  width: 100%!important;
 }
 </style>

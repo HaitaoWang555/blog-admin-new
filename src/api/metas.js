@@ -1,5 +1,11 @@
 import request from '@/utils/request'
 
+export function fetchListAll() {
+  return request({
+    url: '/metas/listAll',
+    method: 'get'
+  })
+}
 export function fetchList(query) {
   return request({
     url: '/metas/list',

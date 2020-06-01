@@ -49,6 +49,14 @@ module.exports = {
         pathRewrite: {
           '^/api': ''
         }
+      },
+      '/upload': {
+        target: process.env.VUE_APP_PROXY_TARGET,
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/upload': '/upload'
+        }
       }
     }
   },

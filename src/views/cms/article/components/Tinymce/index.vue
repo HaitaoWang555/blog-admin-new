@@ -177,6 +177,9 @@ export default {
   position: relative;
   line-height: normal;
 }
+.tinymce-container iframe {
+  width: 1200px;
+}
 .tinymce-container>>>.mce-fullscreen {
   z-index: 10000;
 }
@@ -188,7 +191,6 @@ export default {
   position: absolute;
   right: 4px;
   top: 4px;
-  /*z-index: 2005;*/
 }
 .fullscreen .editor-custom-btn-container {
   z-index: 10000;

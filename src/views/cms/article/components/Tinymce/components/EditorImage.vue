@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { upload } from '@/api/public'
+import { uploadImgInMd } from '@/api/article'
 export default {
   name: 'EditorSlideUpload',
   props: {
@@ -62,6 +62,7 @@ export default {
       }
     },
     handleUpload(option) {
+      if (!option.data) return
       const formData = new FormData()
       if (option.data) {
         Object.keys(option.data).forEach(function(key) {
@@ -70,7 +71,7 @@ export default {
       }
       const uid = option.file.uid
       formData.append(option.filename, option.file, option.file.name)
-      return upload(formData, option).then(res => {
+      return uploadImgInMd(formData, option).then(res => {
         if (!res) this.unUpload = true
         this.handleSuccess(res, uid)
       })

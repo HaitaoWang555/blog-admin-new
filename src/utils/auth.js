@@ -1,7 +1,7 @@
 import store from 'store'
 
-const TokenKey = 'shop_admin_token'
-const settingKey = 'user_setting'
+const TokenKey = 'blog_admin_token'
+const settingKey = 'user_editor_setting'
 
 export function getToken() {
   return store.get(TokenKey)
