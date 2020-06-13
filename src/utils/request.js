@@ -61,7 +61,8 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      console.log('Promise Error: ' + res.message)
+      return null
     } else {
       return res
     }
@@ -73,7 +74,7 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000
     })
-    return Promise.reject(error)
+    return null
   }
 )
 

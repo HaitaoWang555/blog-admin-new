@@ -197,7 +197,12 @@ export default {
     }
   },
   created() {
-    this.editorModel = getSetting() || 'markdownEditor'
+    if (getSetting()) {
+      this.editorModel = getSetting()
+    } else {
+      setSetting('markdownEditor')
+      this.editorModel = 'markdownEditor'
+    }
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
@@ -217,7 +222,7 @@ export default {
       fetchArticle(id).then(response => {
         this.postForm = response.data
         this.postForm.comment_disabled = !this.postForm.allow_comment
-        this.editorModel = this.postForm.editorType
+        if (this.postForm.editorType) this.editorModel = this.postForm.editorType
         this.showEditor = true
         this.initMetas()
       }).catch(err => {
@@ -235,9 +240,7 @@ export default {
     submitForm() {
       this.initMetaId()
       const newContent = this.getContent()
-      this.postForm.content = newContent !== this.postForm.content
-        ? newContent
-        : null
+      this.postForm.content = newContent
       this.postForm.allow_comment = !this.postForm.comment_disabled
       this.$refs.postForm.validate(valid => {
         if (valid) {
@@ -354,20 +357,22 @@ export default {
     completeUpload(res) {
       let value = res.data
       if (!value) return
-      value = value.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi, (match, capture) => {
-        const string = capture.slice(0, 1)
-        const start = capture.lastIndexOf(string) + 1
-        const imgName = capture.slice(start)
-        let newSrc = capture.slice(0, start) + 'thumbnail/' + imgName
-        newSrc = newSrc.replace('.png', '.png.jpg')
-        const suffix = imgName.slice(imgName.lastIndexOf('.'))
+      if (this.editorModel === 'tinymceEditor') {
+        value = value.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi, (match, capture) => {
+          const string = capture.slice(0, 1)
+          const start = capture.lastIndexOf(string) + 1
+          const imgName = capture.slice(start)
+          let newSrc = capture.slice(0, start) + 'thumbnail/' + imgName
+          newSrc = newSrc.replace('.png', '.png.jpg')
+          const suffix = imgName.slice(imgName.lastIndexOf('.'))
 
-        if (this.isImgType(suffix)) {
-          return match.replace(capture, newSrc)
-        } else {
-          return match
-        }
-      })
+          if (this.isImgType(suffix)) {
+            return match.replace(capture, newSrc)
+          } else {
+            return match
+          }
+        })
+      }
       this.$refs[getSetting()].setValue(value)
     },
     isImgType(suffix) {

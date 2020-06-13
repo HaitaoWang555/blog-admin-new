@@ -25,7 +25,7 @@ export function createArticle(data) {
 
 export function updateArticle(data) {
   return request({
-    url: '/article/update',
+    url: '/article/update/' + data.id,
     method: 'post',
     data
   })
