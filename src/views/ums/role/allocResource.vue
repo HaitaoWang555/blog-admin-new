@@ -138,11 +138,8 @@ export default {
         params.append('roleId', this.roleId)
         params.append('resourceIds', Array.from(checkedResourceIds))
         allocResource(params).then(response => {
-          this.$message({
-            message: '分配成功',
-            type: 'success',
-            duration: 1000
-          })
+          if (!response) return
+          this.$tips(response)
           this.$router.back()
         })
       })

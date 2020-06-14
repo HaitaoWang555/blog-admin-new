@@ -183,10 +183,8 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteResource(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+          if (!response) return
+          this.$tips(response)
           this.getList()
         })
       })
@@ -204,19 +202,15 @@ export default {
       }).then(() => {
         if (this.isEdit) {
           updateResource(this.resource.id, this.resource).then(response => {
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
+            if (!response) return
+            this.$tips(response)
             this.dialogVisible = false
             this.getList()
           })
         } else {
           createResource(this.resource).then(response => {
-            this.$message({
-              message: '添加成功！',
-              type: 'success'
-            })
+            if (!response) return
+            this.$tips(response)
             this.dialogVisible = false
             this.getList()
           })

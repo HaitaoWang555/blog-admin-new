@@ -108,22 +108,16 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateMenu(this.$route.query.id, this.menu).then(response => {
-                this.$message({
-                  message: '修改成功',
-                  type: 'success',
-                  duration: 1000
-                })
+                if (!response) return
+                this.$tips(response)
                 this.$router.back()
               })
             } else {
               createMenu(this.menu).then(response => {
+                if (!response) return
+                this.$tips(response)
                 this.$refs[formName].resetFields()
                 this.resetForm(formName)
-                this.$message({
-                  message: '提交成功',
-                  type: 'success',
-                  duration: 1000
-                })
                 this.$router.back()
               })
             }

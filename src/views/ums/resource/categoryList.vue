@@ -106,10 +106,8 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteResourceCategory(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+          if (!response) return
+          this.$tips(response)
           this.getList()
         })
       })
@@ -122,19 +120,15 @@ export default {
       }).then(() => {
         if (this.isEdit) {
           updateResourceCategory(this.resourceCategory.id, this.resourceCategory).then(response => {
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
+            if (!response) return
+            this.$tips(response)
             this.dialogVisible = false
             this.getList()
           })
         } else {
           createResourceCategory(this.resourceCategory).then(response => {
-            this.$message({
-              message: '添加成功！',
-              type: 'success'
-            })
+            if (!response) return
+            this.$tips(response)
             this.dialogVisible = false
             this.getList()
           })

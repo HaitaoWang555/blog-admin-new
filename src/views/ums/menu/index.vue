@@ -99,11 +99,8 @@ export default {
     },
     handleHiddenChange(index, row) {
       updateHidden(row.id, { hidden: row.hidden }).then(response => {
-        this.$message({
-          message: '修改成功',
-          type: 'success',
-          duration: 1000
-        })
+        if (!response) return
+        this.$tips(response)
       })
     },
     handleShowNextLevel(index, row) {
@@ -119,11 +116,8 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteMenu(row.id).then(response => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-            duration: 1000
-          })
+          if (!response) return
+          this.$tips(response)
           this.getList()
         })
       })

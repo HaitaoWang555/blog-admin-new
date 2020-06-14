@@ -184,17 +184,15 @@ export default {
         type: 'warning'
       }).then(() => {
         updateStatus(row.id, { status: row.status }).then(response => {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          })
+          if (!response) return
+          this.$tips(response)
+          this.getList()
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '取消修改'
         })
-        this.getList()
       })
     },
     handleDelete(index, row) {
@@ -208,10 +206,8 @@ export default {
         const params = new URLSearchParams()
         params.append('ids', ids)
         deleteRole(params).then(response => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+          if (!response) return
+          this.$tips(response)
           this.getList()
         })
       })
@@ -229,19 +225,15 @@ export default {
       }).then(() => {
         if (this.isEdit) {
           updateRole(this.role.id, this.role).then(response => {
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
+            if (!response) return
+            this.$tips(response)
             this.dialogVisible = false
             this.getList()
           })
         } else {
           createRole(this.role).then(response => {
-            this.$message({
-              message: '添加成功！',
-              type: 'success'
-            })
+            if (!response) return
+            this.$tips(response)
             this.dialogVisible = false
             this.getList()
           })
