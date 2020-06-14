@@ -221,13 +221,13 @@ export default {
         updateStatus(row.id, { status: row.status }).then(response => {
           if (!response) return
           this.$tips(response)
-          this.getList()
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '取消修改'
         })
+        this.list[index].status = this.list[index].status ? 0 : 1
       })
     },
     handleDelete(index, row) {
