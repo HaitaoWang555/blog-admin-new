@@ -47,7 +47,7 @@ export function delMeta(id) {
 
 export function downloadList(ids) {
   return request({
-    url: '/metas/download',
+    url: '/metas/export',
     method: 'get',
     responseType: 'blob',
     params: { ids }
