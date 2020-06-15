@@ -127,7 +127,7 @@ export default {
       const data = new FormData()
       data.append('file', file)
       return uploadImgInMd(data).then(res => {
-        if (res && res.data) callback(res.data, 'image')
+        if (res && res.data) callback(encodeURI(res.data), 'image')
       })
     },
     beforeUpload(file) {
