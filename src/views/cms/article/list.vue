@@ -235,7 +235,7 @@ export default {
         status: null,
         sortBy: null
       },
-      frontUrl: process.env.VUE_APP_FORNT_URL
+      frontUrl: process.env.VUE_APP_FORNT_URL || '/'
     }
   },
   created() {
