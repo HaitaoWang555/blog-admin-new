@@ -145,7 +145,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />
   </div>
 </template>
 
@@ -229,7 +229,7 @@ export default {
       listLoading: true,
       metaValue: null,
       listQuery: {
-        page: 1,
+        pageNum: 1,
         pageSize: 20,
         title: null,
         status: null,
@@ -270,7 +270,7 @@ export default {
         this.listQuery.meta = null
       }
       this.listQuery.status = this.listQuery.status || null
-      this.listQuery.page = 1
+      this.listQuery.pageNum = 1
       this.getList()
     },
     handleSelectionChange(val) {

@@ -89,7 +89,7 @@
     <pagination
       v-show="total>0"
       :total="total"
-      :page.sync="listQuery.page"
+      :page.sync="listQuery.pageNum"
       :limit.sync="listQuery.pageSize"
       @pagination="getList"
     />
@@ -172,7 +172,7 @@ export default {
       listLoading: true,
       total: 0,
       listQuery: {
-        page: 1,
+        pageNum: 1,
         pageSize: 10
       },
       dialog: false,
@@ -245,7 +245,7 @@ export default {
     search() {
       this.listQuery.keyword = this.searchValue
       this.listQuery.type = this.selectValue
-      this.listQuery.page = 1
+      this.listQuery.pageNum = 1
       this.getList()
     },
     edit(row, index) {
