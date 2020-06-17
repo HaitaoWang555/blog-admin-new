@@ -1,5 +1,11 @@
 <template>
-  <div :id="id" />
+  <div>
+    <div :id="id" />
+    <div class="tui-editor-screenfull-btn">
+      <svg-icon icon-class="screenfull" class-name="screenfull" @click.native="screenfull()" />
+
+    </div>
+  </div>
 </template>
 
 <script>
@@ -14,7 +20,6 @@ import Editor from 'tui-editor'
 import defaultOptions from './default-options'
 
 import { uploadImgInMd } from '@/api/article'
-
 export default {
   name: 'MarddownEditor',
   props: {
@@ -52,7 +57,8 @@ export default {
   },
   data() {
     return {
-      editor: null
+      editor: null,
+      isScreenfull: false
     }
   },
   computed: {
@@ -142,6 +148,17 @@ export default {
         this.$message.error('上传图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    screenfull() {
+      if (this.isScreenfull) {
+        document.getElementById(this.id).className = ''
+        document.querySelector('.tui-editor-screenfull-btn').className = 'tui-editor-screenfull-btn'
+        this.isScreenfull = false
+      } else {
+        document.getElementById(this.id).className = 'tui-editor-screenfull'
+        document.querySelector('.tui-editor-screenfull-btn').className = 'tui-editor-screenfull-btn fixed-btn'
+        this.isScreenfull = true
+      }
     }
   }
 }
@@ -158,5 +175,32 @@ export default {
 }
 .te-md-container .te-preview {
   width: 100%!important;
+}
+.tui-editor-wrap {
+  position: relative;
+}
+.tui-editor-screenfull {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh!important;
+  background-color: white;
+  z-index: 10000;
+}
+.tui-editor-screenfull-btn {
+  position: absolute;
+  right: 20px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  color: #333333;
+  cursor: pointer;
+  z-index: 10000;
+}
+.tui-editor-screenfull-btn.fixed-btn {
+  position: fixed;
 }
 </style>

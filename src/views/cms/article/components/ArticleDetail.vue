@@ -72,7 +72,6 @@
 
         <el-form-item v-if="showEditor" prop="content">
           <template v-if="editorModel === 'markdownEditor'">
-            <Screenfull class="screenfull" screenfull-name="markdown-editor" />
             <markdown-editor
               ref="markdownEditor"
               class="markdown-editor"
@@ -108,7 +107,7 @@
 import MarkdownEditor from './MarkdownEditor'
 import Tinymce from './Tinymce'
 import MDinput from '@/components/MDinput'
-import Screenfull from '@/components/Screenfull'
+
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchArticle, createArticle, updateArticle } from '@/api/article'
 import { fetchListAll } from '@/api/metas'
@@ -129,7 +128,7 @@ const defaultForm = {
 
 export default {
   name: 'ArticleDetail',
-  components: { MarkdownEditor, MDinput, Sticky, CommentDropdown, Meta, Upload, Screenfull, Tinymce },
+  components: { MarkdownEditor, MDinput, Sticky, CommentDropdown, Meta, Upload, Tinymce },
   filters: {
     statusFilterMeta(status) {
       const statusMap = {
@@ -401,12 +400,6 @@ export default {
         float: left;
       }
     }
-  }
-  .screenfull {
-    position: absolute;
-    right: 20px;
-    top: 0;
-    z-index: 100;
   }
   .markdown-editor {
     position: relative;
