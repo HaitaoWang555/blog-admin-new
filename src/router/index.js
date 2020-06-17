@@ -31,8 +31,8 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '/login', component: () => import(/* webpackChunkName: "login" */'@/views/login/index'), hidden: true },
+  { path: '/404', component: () => import(/* webpackChunkName: "404" */'@/views/404'), hidden: true },
   {
     path: '',
     component: Layout,
@@ -40,7 +40,7 @@ export const constantRouterMap = [
     children: [{
       path: 'home',
       name: 'home',
-      component: () => import('@/views/home/index'),
+      component: () => import(/* webpackChunkName: "home" */'@/views/home/index'),
       meta: { title: '首页', icon: 'home' }
     }]
   }
@@ -56,26 +56,26 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'list',
-        component: () => import('@/views/cms/article/list'),
+        component: () => import(/* webpackChunkName: "article-list" */'@/views/cms/article/list'),
         name: 'list',
         meta: { itle: '文章列表', icon: 'cms-list' }
       },
       {
         path: 'create',
-        component: () => import('@/views/cms/article/create'),
+        component: () => import(/* webpackChunkName: "article-create" */'@/views/cms/article/create'),
         name: 'create',
         meta: { title: '创建文章', icon: 'cms-create' }
       },
       {
         path: 'edit/:id',
         name: 'edit',
-        component: () => import('@/views/cms/article/edit'),
+        component: () => import(/* webpackChunkName: "/article-edit" */'@/views/cms/article/edit'),
         meta: { title: '编辑文章', noCache: true },
         hidden: true
       },
       {
         path: 'metas',
-        component: () => import('@/views/cms/metas/index'),
+        component: () => import(/* webpackChunkName: "metas" */'@/views/cms/metas/index'),
         name: 'metas',
         meta: { itle: '标签与分类', icon: 'cms-list' }
       }
@@ -91,59 +91,59 @@ export const asyncRouterMap = [
       {
         path: 'admin',
         name: 'admin',
-        component: () => import('@/views/ums/admin/index'),
+        component: () => import(/* webpackChunkName: "admin-index" */'@/views/ums/admin/index'),
         meta: { title: '用户列表', icon: 'ums-admin' }
       },
       {
         path: 'role',
         name: 'role',
-        component: () => import('@/views/ums/role/index'),
+        component: () => import(/* webpackChunkName: "role-index" */'@/views/ums/role/index'),
         meta: { title: '角色列表', icon: 'ums-role' }
       },
       {
         path: 'allocMenu',
         name: 'allocMenu',
-        component: () => import('@/views/ums/role/allocMenu'),
+        component: () => import(/* webpackChunkName: "role-allocMenu" */'@/views/ums/role/allocMenu'),
         meta: { title: '分配菜单' },
         hidden: true
       },
       {
         path: 'allocResource',
         name: 'allocResource',
-        component: () => import('@/views/ums/role/allocResource'),
+        component: () => import(/* webpackChunkName: "role-allocResource" */'@/views/ums/role/allocResource'),
         meta: { title: '分配资源' },
         hidden: true
       },
       {
         path: 'menu',
         name: 'menu',
-        component: () => import('@/views/ums/menu/index'),
+        component: () => import(/* webpackChunkName: "menu-index" */'@/views/ums/menu/index'),
         meta: { title: '菜单列表', icon: 'ums-menu' }
       },
       {
         path: 'addMenu',
         name: 'addMenu',
-        component: () => import('@/views/ums/menu/add'),
+        component: () => import(/* webpackChunkName: "menu-add" */'@/views/ums/menu/add'),
         meta: { title: '添加菜单' },
         hidden: true
       },
       {
         path: 'updateMenu',
         name: 'updateMenu',
-        component: () => import('@/views/ums/menu/update'),
+        component: () => import(/* webpackChunkName: "menu-update" */'@/views/ums/menu/update'),
         meta: { title: '修改菜单' },
         hidden: true
       },
       {
         path: 'resource',
         name: 'resource',
-        component: () => import('@/views/ums/resource/index'),
+        component: () => import(/* webpackChunkName: "resource-index" */'@/views/ums/resource/index'),
         meta: { title: '资源列表', icon: 'ums-resource' }
       },
       {
         path: 'resourceCategory',
         name: 'resourceCategory',
-        component: () => import('@/views/ums/resource/categoryList'),
+        component: () => import(/* webpackChunkName: "resource-categoryList" */'@/views/ums/resource/categoryList'),
         meta: { title: '资源分类' },
         hidden: true
       }
