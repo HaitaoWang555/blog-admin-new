@@ -78,6 +78,12 @@ export const asyncRouterMap = [
         component: () => import(/* webpackChunkName: "metas" */'@/views/cms/metas/index'),
         name: 'metas',
         meta: { itle: '标签与分类', icon: 'cms-list' }
+      },
+      {
+        path: 'poetry',
+        component: () => import(/* webpackChunkName: "poetry" */'@/views/cms/poetry/index'),
+        name: 'poetry',
+        meta: { itle: '诗词列表', icon: 'cms-list' }
       }
     ]
   },
