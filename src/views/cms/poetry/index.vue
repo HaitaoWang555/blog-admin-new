@@ -188,6 +188,8 @@ export default {
           if (element) {
             isHaveKeyword = true
             this.listQuery[key] = element
+          } else {
+            this.listQuery[key] = null
           }
         }
       }
