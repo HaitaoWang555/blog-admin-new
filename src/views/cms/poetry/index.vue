@@ -18,7 +18,7 @@
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.title = null"
+        @clear="searchValue.dynasty = null"
         @keyup.enter.native="search"
       />
       <el-input
@@ -28,7 +28,7 @@
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.title = null"
+        @clear="searchValue.author = null"
         @keyup.enter.native="search"
       />
       <el-input
@@ -38,7 +38,7 @@
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.title = null"
+        @clear="searchValue.content = null"
         @keyup.enter.native="search"
       />
 
