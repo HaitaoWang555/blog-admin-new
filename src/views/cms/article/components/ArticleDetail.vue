@@ -61,7 +61,7 @@
                 </el-button>
               </div>
               <div style="width: 220px" class="text-center postInfo-container-item">
-                <el-select v-model="editorModel" placeholder="请选择" @change="changeEditorModel">
+                <el-select v-model="editorModelSelect" placeholder="请选择" @change="changeEditorModel">
                   <el-option label="MarkDown编辑器" value="markdownEditor" />
                   <el-option label="富文本编辑器" value="tinymceEditor" />
                 </el-select>
@@ -192,12 +192,14 @@ export default {
       metaData: {},
       uploadData: {},
       showEditor: false, // 编辑器根据文章类型展示
-      editorModel: 'markdownEditor'
+      editorModel: 'markdownEditor',
+      editorModelSelect: 'markdownEditor'
     }
   },
   created() {
     if (getSetting()) {
       this.editorModel = getSetting()
+      this.editorModelSelect = getSetting()
     } else {
       setSetting('markdownEditor')
       this.editorModel = 'markdownEditor'
@@ -221,7 +223,12 @@ export default {
       fetchArticle(id).then(response => {
         this.postForm = response.data
         this.postForm.comment_disabled = !this.postForm.allow_comment
-        if (this.postForm.editorType) this.editorModel = this.postForm.editorType
+        const editorType = this.postForm.editorType
+        if (editorType) {
+          this.editorModel = editorType
+          this.editorModelSelect = editorType
+          setSetting(editorType)
+        }
         this.showEditor = true
         this.initMetas()
       }).catch(err => {
@@ -234,7 +241,8 @@ export default {
       if (this.isEdit) this.findMetaId()
     },
     getContent() {
-      return this.$refs.markdownEditor.getHtml()
+      const refStr = getSetting()
+      return this.$refs[refStr].getHtml()
     },
     submitForm() {
       this.initMetaId()
@@ -381,6 +389,7 @@ export default {
     changeEditorModel(val) {
       this.postForm.content = this.getContent()
       setSetting(val)
+      this.editorModel = val
     }
   }
 }
