@@ -106,6 +106,7 @@ export default {
         } else {
           this.setValue(this.value)
         }
+        document.querySelector('.markdown-editor .CodeMirror-scroll').scrollTop = 0
       }
       // this.editor.on('change', () => {
       //   this.$emit('input', this.editor.getHtml())
