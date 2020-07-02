@@ -306,8 +306,8 @@ export default {
       this.loading2 = false
     },
     findMetaId() {
-      this.postForm.tags = this.postForm.tags ? this.postForm.tags : []
-      this.postForm.category = this.postForm.category ? this.postForm.category : []
+      this.postForm.tags = this.postForm.tags ? this.postForm.tags.split(',') : []
+      this.postForm.category = this.postForm.category ? this.postForm.category.split(',') : []
       const arr = this.postForm.tags.concat(this.postForm.category)
 
       if (this.metaOptions) {
