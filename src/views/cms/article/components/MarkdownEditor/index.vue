@@ -11,12 +11,12 @@
 <script>
 // deps for editor
 import 'codemirror/lib/codemirror.css' // codemirror
-import 'tui-editor/dist/tui-editor.css' // editor ui
-import 'tui-editor/dist/tui-editor-contents.css' // editor content
-import 'tui-editor/dist/tui-editor-extScrollSync'
-require('highlight.js/styles/github.css')
+import '@toast-ui/editor/dist/toastui-editor.css' // editor ui
+// import 'highlight.js/styles/github.css'
+// import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
+// import hljs from 'highlight.js'
 
-import Editor from 'tui-editor'
+import Editor from '@toast-ui/editor'
 import defaultOptions from './default-options'
 
 import { uploadImgInMd } from '@/api/article'
@@ -98,6 +98,7 @@ export default {
     initEditor() {
       this.editor = new Editor({
         el: document.getElementById(this.id),
+        // plugins: [[codeSyntaxHighlight, { hljs }]],
         ...this.editorOptions
       })
       if (this.value) {
@@ -171,11 +172,8 @@ export default {
 .tui-editor-defaultUI .te-mode-switch-section {
   height: 30px;
 }
-.te-md-splitter {
-  width: 50%!important;
-}
-.te-md-container .te-preview {
-  width: 100%!important;
+.te-md-container .CodeMirror, .tui-editor-contents {
+  font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 .tui-editor-wrap {
   position: relative;

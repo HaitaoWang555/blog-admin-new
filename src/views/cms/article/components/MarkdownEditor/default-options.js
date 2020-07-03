@@ -5,7 +5,7 @@ export default {
   useCommandShortcut: true,
   useDefaultHTMLSanitizer: true,
   usageStatistics: false,
-  hideModeSwitch: true,
+  hideModeSwitch: false,
   exts: ['scrollSync'],
   toolbarItems: [
     'heading',
