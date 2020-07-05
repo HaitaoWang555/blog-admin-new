@@ -119,10 +119,10 @@ export default {
       this.editor.remove()
     },
     setValue(value) {
-      this.editor.setValue(value)
+      this.editor.setMarkdown(value)
     },
     getValue() {
-      return this.editor.getValue()
+      return this.editor.getMarkdown()
     },
     setHtml(value) {
       this.editor.setHtml(value)
