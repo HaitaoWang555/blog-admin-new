@@ -172,8 +172,15 @@ export default {
 .tui-editor-defaultUI .te-mode-switch-section {
   height: 30px;
 }
-.te-md-container .CodeMirror, .tui-editor-contents {
-  font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+.tui-editor-defaultUI,
+.tui-popup-code-block-editor .CodeMirror-line,
+.te-md-container .CodeMirror,
+.tui-editor-contents,
+.tui-editor-contents pre,
+.tui-editor-contents code,
+.tui-md-code,
+.tui-md-code-block {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .tui-editor-wrap {
   position: relative;
@@ -197,9 +204,10 @@ export default {
   font-size: 18px;
   color: #333333;
   cursor: pointer;
-  z-index: 10000;
+  z-index: 999;
 }
 .tui-editor-screenfull-btn.fixed-btn {
   position: fixed;
+  z-index: 10000;
 }
 </style>
