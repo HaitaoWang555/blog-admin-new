@@ -12,9 +12,9 @@
 // deps for editor
 import 'codemirror/lib/codemirror.css' // codemirror
 import '@toast-ui/editor/dist/toastui-editor.css' // editor ui
-// import 'highlight.js/styles/github.css'
-// import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
-// import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
+import hljs from 'highlight.js'
 
 import Editor from '@toast-ui/editor'
 import defaultOptions from './default-options'
@@ -73,7 +73,7 @@ export default {
   },
   watch: {
     value(newValue, preValue) {
-      if (newValue !== preValue && newValue !== this.editor.getValue()) {
+      if (newValue !== preValue && newValue !== this.editor.getMarkdown()) {
         this.editor.setHtml(newValue)
       }
     },
@@ -98,7 +98,7 @@ export default {
     initEditor() {
       this.editor = new Editor({
         el: document.getElementById(this.id),
-        // plugins: [[codeSyntaxHighlight, { hljs }]],
+        plugins: [[codeSyntaxHighlight, { hljs }]],
         ...this.editorOptions
       })
       if (this.value) {

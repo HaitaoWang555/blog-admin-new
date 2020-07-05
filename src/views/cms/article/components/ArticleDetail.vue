@@ -349,8 +349,9 @@ export default {
       this.dialogMeta = false
       this.dialogUpload = false
     },
-    changeList() {
-      this.initMetas()
+    async changeList() {
+      const res = await fetchListAll()
+      if (res) this.metaOptions = res.data
     },
     // 上传文章
     upload() {
