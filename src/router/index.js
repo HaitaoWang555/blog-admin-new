@@ -33,6 +33,7 @@ import Layout from '@/layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import(/* webpackChunkName: "login" */'@/views/login/index'), hidden: true },
   { path: '/404', component: () => import(/* webpackChunkName: "404" */'@/views/404'), hidden: true },
+  { path: '/icon', component: () => import(/* webpackChunkName: "svg" */'@/views/svg-icons/index'), hidden: true },
   {
     path: '',
     component: Layout,
@@ -50,9 +51,9 @@ export const asyncRouterMap = [
   {
     path: '/cms',
     component: Layout,
-    redirect: '/cms/article',
-    name: 'article',
-    meta: { title: '文章', icon: 'cms-article' },
+    redirect: '/cms/list',
+    name: 'content',
+    meta: { title: '内容', icon: 'cms-article' },
     children: [
       {
         path: 'list',
@@ -84,6 +85,12 @@ export const asyncRouterMap = [
         component: () => import(/* webpackChunkName: "poetry" */'@/views/cms/poetry/index'),
         name: 'poetry',
         meta: { itle: '诗词列表', icon: 'cms-list' }
+      },
+      {
+        path: 'note',
+        component: () => import(/* webpackChunkName: "note" */'@/views/cms/note/index'),
+        name: 'note',
+        meta: { itle: '笔记列表', icon: 'cms-list' }
       }
     ]
   },
