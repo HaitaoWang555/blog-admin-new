@@ -80,8 +80,10 @@ export default {
         this.title = this.$route.query.name
         return
       }
-      this.title = res.data.title
-      this.content = res.data.content
+      if (res.data) {
+        this.title = res.data.title
+        this.content = res.data.content
+      }
     },
     async save() {
       const noteData = {

@@ -44,7 +44,7 @@
 
 <script>
 import SidebarItem from './SidebarItem'
-import { treeList, addMenu } from '@/api/note'
+import { treeList, addMenu, delMenu } from '@/api/note'
 
 export default {
   name: 'Sidebar',
@@ -131,10 +131,18 @@ export default {
         })
       }).catch(() => { this.closeMenu() })
     },
-    delNoteMenu() {},
+    delNoteMenu() {
+      if (!this.tag) return
+      delMenu(this.tag.id).then(res => {
+        if (!res) return
+        this.updateTreeDel()
+        this.$tips(res)
+      })
+    },
     updateTree(data) {
+      this.activeMenu = String(data.id)
+
       if (data.parentId) {
-        this.activeMenu = String(data.id)
         this.treeAdd(this.noteList, data)
       } else {
         this.noteList.push(data)
@@ -146,6 +154,24 @@ export default {
         })
         this.reSetMenu()
       }
+    },
+    updateTreeDel() {
+      this.treeDel(this.noteList, this.tag.id)
+      if (this.tag.id === this.$route.query.id) {
+        this.activeMenu = null
+        this.$message({ message: '当前文章已删除', type: 'warning', offset: 100 })
+      }
+    },
+    treeDel(arr, delId) {
+      arr.forEach((element, index) => {
+        if (element.id === delId) {
+          arr.splice(index, 1)
+        } else {
+          if (element.children) {
+            this.treeDel(element.children, delId)
+          }
+        }
+      })
     },
     treeAdd(arr, data) {
       arr.forEach(element => {
@@ -159,8 +185,7 @@ export default {
           }
         } else {
           if (element.children) {
-            const newArr = Array.from(element.children)
-            this.treeAdd(newArr, data)
+            this.treeAdd(element.children, data)
           }
         }
       })
@@ -192,7 +217,7 @@ export default {
       } else {
         this.parent(event.target)
         this.tag = JSON.parse(this.sidebarTag.dataset.file)
-        if (this.tag.menuType === 'file') this.tagsFileView = false
+        this.tagsFileView = this.tag.menuType !== 'file'
         this.sidebarTag.className += ' sidebarTagSubmenu'
         this.showMenu(event)
       }
