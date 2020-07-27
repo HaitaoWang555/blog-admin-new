@@ -381,7 +381,7 @@ export default {
           }
         })
       }
-      this.$refs[getSetting()].setValue(value)
+      this.$refs[getSetting()].setValue(this.getContent() + '\n' + value)
     },
     isImgType(suffix) {
       const imgType = ['.png', '.jpg', '.jpeg']

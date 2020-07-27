@@ -44,7 +44,7 @@
 
 <script>
 import SidebarItem from './SidebarItem'
-import { treeList } from '@/api/note'
+import { treeList, addMenu } from '@/api/note'
 
 export default {
   name: 'Sidebar',
@@ -99,7 +99,7 @@ export default {
       if (!data) return
       this.noteList = data.data.list
       const id = this.$route.query.id
-      if (id) this.activeMenu = id
+      if (id) this.activeMenu = String(id)
     },
     toggle() {
       this.isOpened = !this.isOpened
@@ -112,7 +112,7 @@ export default {
     clear() {},
     search() {},
     addNoteMenu(type) {
-      this.sidebarTag.className += ' sidebarTagSubmenu'
+      if (this.sidebarTag) this.sidebarTag.className += ' sidebarTagSubmenu'
       this.noteMenu.parentId = this.tag ? this.tag.id : 0
       this.noteMenu.menuType = type
       const head = type === 'file' ? '文件名称' : '文件夹名称'
@@ -123,19 +123,56 @@ export default {
         cancelButtonText: '取消'
       }).then(({ value }) => {
         this.noteMenu.name = value
-        console.log(this.noteMenu)
-        this.closeMenu()
+        addMenu(this.noteMenu).then(res => {
+          if (!res) return
+          this.updateTree(res.data)
+          this.$tips(res)
+          this.closeMenu()
+        })
       }).catch(() => { this.closeMenu() })
     },
     delNoteMenu() {},
+    updateTree(data) {
+      if (data.parentId) {
+        this.activeMenu = String(data.id)
+        this.treeAdd(this.noteList, data)
+      } else {
+        this.noteList.push(data)
+      }
+      if (data.menuType === 'file') {
+        // 跳转笔记内容链接
+        this.$router.push({ name: 'note',
+          query: { id: data.id, aid: data.articleId, name: data.name }
+        })
+        this.reSetMenu()
+      }
+    },
+    treeAdd(arr, data) {
+      arr.forEach(element => {
+        if (element.id === data.parentId) {
+          if (element.children) {
+            element.children.push(data)
+          } else {
+            const arr = []
+            arr.push(data)
+            this.$set(element, 'children', arr)
+          }
+        } else {
+          if (element.children) {
+            const newArr = Array.from(element.children)
+            this.treeAdd(newArr, data)
+          }
+        }
+      })
+    },
     goRouter() {
       if (event.target.className !== 'el-menu') {
         this.parent(event.target)
         const tag = JSON.parse(this.sidebarTag.dataset.file)
         if (tag.menuType !== 'folder') {
           this.activeMenu = String(tag.id)
-          this.$router.push({ path: '/cms/note',
-            query: { id: tag.id }
+          this.$router.push({ name: 'note',
+            query: { id: tag.id, aid: tag.aid, name: tag.name }
           })
         }
       }
@@ -162,7 +199,13 @@ export default {
     },
     closeMenu() {
       if (this.sidebarTag) {
-        this.sidebarTag.className = this.sidebarTag.className.replace('sidebarTagSubmenu', '')
+        // removeClass sidebarTagSubmenu
+        const content = document.querySelectorAll('.el-menu .sidebarTagSubmenu')
+        if (content) {
+          [].forEach.call(content, child => {
+            child.className = child.className.replace('sidebarTagSubmenu', '')
+          })
+        }
       }
       this.visible = false
     },

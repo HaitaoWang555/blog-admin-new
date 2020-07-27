@@ -57,7 +57,7 @@ export default {
 
       // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
-        return true
+        return false
       }
 
       // Show parent if there are no child router to display
@@ -72,7 +72,8 @@ export default {
       return JSON.stringify({
         id: item.id,
         menuType: item.menuType,
-        name: item.name
+        name: item.name,
+        aid: item.articleId ? item.articleId : 0
       })
     }
   }
