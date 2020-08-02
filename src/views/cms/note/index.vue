@@ -1,6 +1,6 @@
 <template>
   <div class="app-container note-container">
-    <Sidebar />
+    <Sidebar ref="Sidebar" />
     <div class="editor-wrap">
       <div class="filter-container">
         <div class="filter-item">标题：</div>
@@ -83,6 +83,8 @@ export default {
       if (res.data) {
         this.title = res.data.title
         this.content = res.data.content
+        this.$refs['markdownEditor'].setValue(this.content)
+        this.$refs['markdownEditor'].goTop()
       }
     },
     async save() {
@@ -95,13 +97,11 @@ export default {
       this.loading = true
       if (this.articleId) {
         noteData.id = this.articleId
+        noteData.content = this.$refs['markdownEditor'].getValue()
         const res = await updateArticle(noteData)
         if (res) this.$tips(res)
         this.loading = false
       }
-    },
-    updateTree(aid) {
-
     },
     // upload
     closeDialog() {
@@ -136,7 +136,11 @@ export default {
           }
         })
       }
-      this.$refs['markdownEditor'].setValue(this.content + '\n' + value)
+      if (this.content) {
+        this.$refs['markdownEditor'].setValue(this.content + '\n' + value)
+      } else {
+        this.$refs['markdownEditor'].setValue(value)
+      }
     },
     isImgType(suffix) {
       const imgType = ['.png', '.jpg', '.jpeg']

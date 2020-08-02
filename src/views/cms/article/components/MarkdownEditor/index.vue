@@ -107,7 +107,7 @@ export default {
         } else {
           this.setValue(this.value)
         }
-        document.querySelector('.markdown-editor .CodeMirror-scroll').scrollTop = 0
+        this.goTop()
       }
       // this.editor.on('change', () => {
       //   this.$emit('input', this.editor.getHtml())
@@ -129,6 +129,9 @@ export default {
     },
     getHtml() {
       return this.editor.getHtml()
+    },
+    goTop() {
+      document.querySelector('.markdown-editor .CodeMirror-scroll').scrollTop = 0
     },
     handleUpload(file, callback) {
       if (!this.beforeUpload(file)) return

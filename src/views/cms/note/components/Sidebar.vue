@@ -35,16 +35,20 @@
     <ul v-if="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li v-show="tagsFileView" @click="addNoteMenu('folder')">{{ tagsView.addFolder }}</li>
       <li v-show="tagsFileView" @click="addNoteMenu('file')">{{ tagsView.addFile }}</li>
+      <li v-show="tagsFileView" @click="importDir">{{ tagsView.importFolder }}</li>
+      <li v-if="tag" @click="updateMenu">{{ tagsView.updateMenu }}</li>
       <li @click="delNoteMenu">{{ tagsView.delete }}</li>
-      <li>{{ tagsView.download }}</li>
+      <li @click="download">{{ tagsView.download }}</li>
     </ul>
-
+    <div style="display:none">
+      <input id="webkitdirectory" type="file" name="files" webkitdirectory multiple @change="uploadBatch">
+    </div>
   </div>
 </template>
 
 <script>
 import SidebarItem from './SidebarItem'
-import { treeList, addMenu, delMenu } from '@/api/note'
+import { treeList, addMenu, delMenu, uploadNoteDir, download, updateMenu } from '@/api/note'
 
 export default {
   name: 'Sidebar',
@@ -63,7 +67,9 @@ export default {
       left: 0,
       tagsView: {
         addFolder: '新建文件夹',
+        importFolder: '导入文件夹',
         addFile: '新建文件',
+        updateMenu: '重命名',
         delete: '删除',
         download: '下载'
       },
@@ -247,6 +253,71 @@ export default {
       } else {
         this.sidebarTag = target
       }
+    },
+    importDir() {
+      document.querySelector('#webkitdirectory').click()
+    },
+    uploadBatch(e) {
+      const formData = new FormData()
+      const data = e.target.files
+      if (data) {
+        [].forEach.call(data, item => {
+          const suffix = item.name.slice(item.name.lastIndexOf('.') + 1)
+          if (!['md', 'doc', 'docx'].includes(suffix)) return
+          formData.append('file', item)
+        })
+      }
+      uploadNoteDir(formData, this.tag ? this.tag.id : 0).then(res => {
+        this.$tips(res)
+        document.querySelector('#webkitdirectory').value = null
+        this.init()
+      })
+    },
+    async download() {
+      const response = await download(this.tag ? this.tag.id : 0)
+      this.downloadFile(response)
+    },
+    downloadFile(response) {
+      if (!response) return
+      const fileName = response.headers['content-disposition'].split(';')[1].split('filename=')[1]
+      const data = response.data
+      const objectURL = window.URL.createObjectURL(new Blob([data]))
+      const link = document.createElement('a')
+      link.href = objectURL
+      link.setAttribute('download', decodeURIComponent(fileName))
+      document.body.appendChild(link)
+      link.click()
+      window.URL.revokeObjectURL(objectURL)
+    },
+    updateMenu() {
+      if (!this.tag) return
+      if (this.sidebarTag) this.sidebarTag.className += ' sidebarTagSubmenu'
+      const head = '新名称'
+      this.$prompt('请输入' + head, {
+        inputPattern: /\S/,
+        inputValue: this.tag.name,
+        inputErrorMessage: head + '不能为空',
+        confirmButtonText: '修改',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        updateMenu(this.tag.id, value).then(res => {
+          if (!res) return
+          this.treeUpdateName(this.noteList, this.tag.id, value)
+          this.$tips(res)
+          this.closeMenu()
+        })
+      }).catch(() => { this.closeMenu() })
+    },
+    treeUpdateName(arr, updateId, name) {
+      arr.forEach((element, index) => {
+        if (element.id === updateId) {
+          element.name = name
+        } else {
+          if (element.children) {
+            this.treeUpdateName(element.children, updateId, name)
+          }
+        }
+      })
     }
   }
 }

@@ -33,3 +33,44 @@ export function delMenu(id) {
     method: 'post'
   })
 }
+
+/**
+ * 修改笔记
+ * @param {Number} id 笔记ID
+ * @param {String} name 笔记名称
+ */
+export function updateMenu(id, name) {
+  return request({
+    url: '/note/update/' + id,
+    method: 'post',
+    params: {
+      name
+    }
+  })
+}
+
+/**
+ * 上传文件夹
+ * @param {*} formData 文件夹
+ * @param {*} id 父级文件夹ID
+ */
+export function uploadNoteDir(formData, id) {
+  return request({
+    url: '/note/uploadDir',
+    method: 'post',
+    params: { id },
+    data: formData
+  })
+}
+
+/**
+ * 下载笔记
+ */
+export function download(id) {
+  return request({
+    url: '/note/download',
+    method: 'get',
+    params: { id },
+    responseType: 'blob'
+  })
+}

@@ -17,6 +17,10 @@ function move(amount) {
   document.documentElement.scrollTop = amount
   document.body.parentNode.scrollTop = amount
   document.body.scrollTop = amount
+  const el = document.querySelector('.el-table__body-wrapper')
+  if (el) {
+    el.scrollTop = amount
+  }
 }
 
 function position() {
