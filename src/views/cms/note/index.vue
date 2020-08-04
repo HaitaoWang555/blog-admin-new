@@ -5,13 +5,22 @@
       <div class="filter-container">
         <div class="filter-item">标题：</div>
         <el-input v-model="title" class="filter-item" clearable style="width: 300px" />
-        <el-button class="filter-item" type="primary" @click="upload">上传文章</el-button>
-        <el-button :loading="loading" class="filter-item" type="primary" @click="save">保存</el-button>
+        <el-button v-show="!isViewer" class="filter-item" type="primary" @click="upload">上传文章</el-button>
+        <el-button v-show="!isViewer" :loading="loading" class="filter-item" type="primary" @click="save">保存</el-button>
+        <el-button class="filter-item" type="primary" @click="changeModel">{{ isViewer ? '编辑' : '预览' }}</el-button>
       </div>
       <markdown-editor
+        v-if="!isViewer"
         ref="markdownEditor"
         class="markdown-editor"
-        height="calc(100vh - 137px)"
+        height="calc(100vh - 151px)"
+        :value="content"
+      />
+
+      <Viewer
+        v-else
+        ref="markdownEditor"
+        class="markdown-viewer"
         :value="content"
       />
     </div>
@@ -31,6 +40,7 @@
 
 <script>
 import Sidebar from './components/Sidebar'
+import Viewer from './components/Viewer'
 import MarkdownEditor from '../article/components/MarkdownEditor'
 import Upload from '../article/components/upload'
 import { fetchArticle, updateArticle } from '@/api/article'
@@ -38,11 +48,12 @@ import { fetchArticle, updateArticle } from '@/api/article'
 export default {
   name: 'Note',
   components: {
-    Sidebar, MarkdownEditor, Upload
+    Sidebar, MarkdownEditor, Upload, Viewer
   },
   data() {
     return {
       loading: false,
+      isViewer: true,
       title: '',
       content: null,
       articleId: null,
@@ -145,6 +156,12 @@ export default {
     isImgType(suffix) {
       const imgType = ['.png', '.jpg', '.jpeg']
       return imgType.includes(suffix)
+    },
+    changeModel() {
+      if (!this.isViewer) {
+        this.content = this.$refs['markdownEditor'].getValue()
+      }
+      this.isViewer = !this.isViewer
     }
   }
 }
@@ -157,6 +174,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .editor-wrap {
   width: calc(100% - 250px);
   height: 100%;
@@ -167,13 +185,19 @@ export default {
 }
 .markdown-editor {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 151px);
   position: relative;
   background-color: #f0f2f5;
 }
 
 </style>
 <style rel="stylesheet/scss" lang="scss">
+.note-container .filter-container{
+  height: 52px;line-height: 52px
+}
+.note-container .markdown-viewer .tui-editor-screenfull-btn {
+  top: 18px;
+}
 .note-container .tui-editor-screenfull-btn {
   top: 8px;
 }
