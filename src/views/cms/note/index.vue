@@ -11,7 +11,7 @@
       <markdown-editor
         ref="markdownEditor"
         class="markdown-editor"
-        height="calc(100vh - 150px)"
+        height="calc(100vh - 137px)"
         :value="content"
       />
     </div>

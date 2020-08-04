@@ -32,7 +32,7 @@
       </el-menu>
     </el-scrollbar>
 
-    <ul v-if="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+    <ul v-if="visible" :style="{left:left+'px',bottom:bottom,top:top}" class="contextmenu">
       <li v-show="tagsFileView" @click="addNoteMenu('folder')">{{ tagsView.addFolder }}</li>
       <li v-show="tagsFileView" @click="addNoteMenu('file')">{{ tagsView.addFile }}</li>
       <li v-show="tagsFileView" @click="importDir">{{ tagsView.importFolder }}</li>
@@ -65,6 +65,7 @@ export default {
       visible: false,
       top: 0,
       left: 0,
+      bottom: 'auto',
       tagsView: {
         addFolder: '新建文件夹',
         importFolder: '导入文件夹',
@@ -244,7 +245,13 @@ export default {
       this.visible = true
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       this.left = event.clientX - offsetLeft + 15 // 15: margin right
-      this.top = event.clientY - 80
+      if (event.clientY > window.innerHeight - 189) {
+        this.top = 'auto'
+        this.bottom = (window.innerHeight - event.clientY - 20) + 'px'
+      } else {
+        this.top = event.clientY - 80 + 'px'
+        this.bottom = 'auto'
+      }
     },
     parent(target) {
       if (!target.dataset.file) {
@@ -267,7 +274,9 @@ export default {
           formData.append('file', item)
         })
       }
+      const screenLoading = this.$screenLoading('上传中，请勿关闭页面')
       uploadNoteDir(formData, this.tag ? this.tag.id : 0).then(res => {
+        screenLoading.close()
         this.$tips(res)
         document.querySelector('#webkitdirectory').value = null
         this.init()

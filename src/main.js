@@ -23,8 +23,9 @@ Object.keys(filters).forEach(key => {
 import waves from '@/directive/waves/waves.js' // waves directive
 Vue.directive('waves', waves)
 
-import { tips } from '@/utils/tips'
+import { tips, screenLoading } from '@/utils/tips'
 Vue.prototype.$tips = tips
+Vue.prototype.$screenLoading = screenLoading
 
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
 
