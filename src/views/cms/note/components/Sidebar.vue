@@ -110,9 +110,9 @@ export default {
   methods: {
     async init() {
       const data = await treeList()
+      this.treeLoading = false
       if (!data) return
       this.noteList = data.data.list
-      this.treeLoading = false
       this.noteListOld = data.data.list
       const id = this.$route.query.id
       if (id) this.activeMenu = String(id)
