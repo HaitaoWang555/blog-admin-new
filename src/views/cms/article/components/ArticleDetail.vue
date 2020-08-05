@@ -76,7 +76,7 @@
               ref="markdownEditor"
               class="markdown-editor"
               height="calc(100vh - 238px)"
-              :value="postForm.content"
+              :value="content"
             />
           </template>
           <Tinymce
@@ -84,7 +84,7 @@
             ref="tinymceEditor"
             class="tinymce-editor"
             height="calc(100vh - 397px)"
-            :value="postForm.content"
+            :value="content"
           />
         </el-form-item>
 
@@ -193,7 +193,8 @@ export default {
       uploadData: {},
       showEditor: false, // 编辑器根据文章类型展示
       editorModel: 'markdownEditor',
-      editorModelSelect: 'markdownEditor'
+      editorModelSelect: 'markdownEditor',
+      content: null
     }
   },
   created() {
@@ -222,6 +223,7 @@ export default {
     fetchData(id) {
       fetchArticle(id).then(response => {
         this.postForm = response.data
+        this.content = this.postForm.content
         this.postForm.comment_disabled = !this.postForm.allow_comment
         const editorType = this.postForm.editorType
         if (editorType) {
@@ -247,7 +249,9 @@ export default {
     submitForm() {
       this.initMetaId()
       const newContent = this.getContent()
+      this.postForm.contentUpdate = newContent !== this.postForm.content
       this.postForm.content = newContent
+
       this.postForm.allow_comment = !this.postForm.comment_disabled
       this.$refs.postForm.validate(valid => {
         if (valid) {
