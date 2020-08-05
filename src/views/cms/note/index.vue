@@ -195,7 +195,7 @@ export default {
 
 .editor-wrap {
   width: calc(100% - 250px);
-  height: 100%;
+  height: calc(100vh - 90px);
   position: relative;
 }
 .editor-wrap.noleft {

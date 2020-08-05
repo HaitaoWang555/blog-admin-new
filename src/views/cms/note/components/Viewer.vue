@@ -106,7 +106,7 @@ export default {
       return this.viewer.getHtml()
     },
     goTop() {
-      document.querySelector('.markdown-viewer').scrollTop = 0
+      document.querySelector('.markdown-viewer .tui-editor-contents').scrollTop = 0
     },
     screenfull() {
       if (this.isScreenfull) {
@@ -125,9 +125,13 @@ export default {
 <style>
 .markdown-viewer {
   background-color: white;
+   height: 93%;
+}
+.markdown-viewer > div {
+  height: 100%;
 }
 .markdown-viewer .tui-editor-contents {
-  height: calc(88.5vh - 50px);
+  height: 100%;
   overflow-y: scroll;
   padding: 0 25px;
 }
