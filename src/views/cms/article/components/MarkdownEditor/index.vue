@@ -15,6 +15,7 @@ import '@toast-ui/editor/dist/toastui-editor.css' // editor ui
 import 'highlight.js/styles/github.css'
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
 import hljs from 'highlight.js'
+import '@toast-ui/editor/dist/i18n/zh-cn'
 
 import Editor from '@toast-ui/editor'
 import defaultOptions from './default-options'
@@ -52,7 +53,7 @@ export default {
     language: {
       type: String,
       required: false,
-      default: 'zh_CN' // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
+      default: 'zh-CN'
     }
   },
   data() {
@@ -200,7 +201,7 @@ export default {
 }
 .tui-editor-screenfull-btn {
   position: absolute;
-  right: 20px;
+  right: 15px;
   top: 2px;
   width: 20px;
   height: 20px;

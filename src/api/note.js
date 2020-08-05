@@ -48,6 +48,17 @@ export function updateMenu(id, name) {
     }
   })
 }
+/**
+ * 转为文章
+ * @param {Number} id 笔记ID
+ */
+export function changeToArticle(data) {
+  return request({
+    url: '/note/toArticle/' + data.id,
+    method: 'post',
+    data
+  })
+}
 
 /**
  * 上传文件夹

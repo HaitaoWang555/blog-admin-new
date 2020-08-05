@@ -15,6 +15,7 @@ import 'highlight.js/styles/github.css'
 import '@toast-ui/editor/dist/toastui-editor-viewer.css'
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
+import '@toast-ui/editor/dist/i18n/zh-cn'
 
 export default {
   name: 'MarddownEditor',
@@ -42,7 +43,7 @@ export default {
     language: {
       type: String,
       required: false,
-      default: 'zh_CN' // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
+      default: 'zh-CN'
     }
   },
   data() {
@@ -126,8 +127,11 @@ export default {
   background-color: white;
 }
 .markdown-viewer .tui-editor-contents {
-  height: calc(100vh - 151px);
+  height: calc(88.5vh - 50px);
   overflow-y: scroll;
   padding: 0 25px;
+}
+.tui-editor-screenfull .tui-editor-contents{
+  height: 100vh;
 }
 </style>

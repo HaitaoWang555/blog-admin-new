@@ -20,7 +20,12 @@
       </div>
 
     </div>
-    <el-scrollbar wrap-class="scrollbar-wrapper" @click.prevent.native="goRouter($event)" @contextmenu.prevent.native="openMenu($event)">
+    <el-scrollbar
+      v-loading="treeLoading"
+      wrap-class="scrollbar-wrapper"
+      @click.prevent.native="goRouter($event)"
+      @contextmenu.prevent.native="openMenu($event)"
+    >
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
@@ -58,7 +63,9 @@ export default {
   data() {
     return {
       filterText: null,
+      treeLoading: true,
       noteList: [],
+      noteListOld: [],
 
       isOpened: true,
 
@@ -105,6 +112,8 @@ export default {
       const data = await treeList()
       if (!data) return
       this.noteList = data.data.list
+      this.treeLoading = false
+      this.noteListOld = data.data.list
       const id = this.$route.query.id
       if (id) this.activeMenu = String(id)
     },
@@ -116,8 +125,34 @@ export default {
         document.querySelector('.editor-wrap').classList = 'editor-wrap noleft'
       }
     },
-    clear() {},
-    search() {},
+    clear() {
+      this.filterText = null
+      this.noteList = JSON.parse(JSON.stringify(this.noteListOld))
+    },
+    search() {
+      if (!this.filterText) return
+      this.noteList = JSON.parse(JSON.stringify(this.noteListOld))
+      this.treeFilter(this.noteList, this.filterText)
+    },
+    treeFilter(list, name) {
+      // TODO
+      const listLength = list.length
+      for (let index = 0; index < listLength; index++) {
+        if (list[index].name.indexOf(name) !== -1) {
+          continue
+        }
+        if (!list[index].children) list[index].children = []
+        if (list[index].children.length) {
+          this.treeFilter(list[index].children, name)
+        }
+        list[index].children = list[index].children.filter(item => {
+          if (item.name.indexOf(name) !== -1 || item.has) {
+            return item
+          }
+        })
+        list[index].children.length && (list[index].has = true)
+      }
+    },
     addNoteMenu(type) {
       if (this.sidebarTag) this.sidebarTag.className += ' sidebarTagSubmenu'
       this.noteMenu.parentId = this.tag ? this.tag.id : 0
@@ -129,6 +164,7 @@ export default {
         confirmButtonText: '添加',
         cancelButtonText: '取消'
       }).then(({ value }) => {
+        if (type === 'file' && value.slice(value.lastIndexOf('.')) !== '.md') value = value + '.md'
         this.noteMenu.name = value
         addMenu(this.noteMenu).then(res => {
           if (!res) return

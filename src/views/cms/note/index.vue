@@ -5,15 +5,16 @@
       <div class="filter-container">
         <div class="filter-item">标题：</div>
         <el-input v-model="title" class="filter-item" clearable style="width: 300px" />
+        <el-button class="filter-item" type="primary" @click="changeModel">{{ isViewer ? '编辑' : '预览' }}</el-button>
         <el-button v-show="!isViewer" class="filter-item" type="primary" @click="upload">上传文章</el-button>
         <el-button v-show="!isViewer" :loading="loading" class="filter-item" type="primary" @click="save">保存</el-button>
-        <el-button class="filter-item" type="primary" @click="changeModel">{{ isViewer ? '编辑' : '预览' }}</el-button>
+        <el-button v-show="!isViewer" :loading="loading2" class="filter-item" type="primary" @click="changeToArticle">保存并复制到文章</el-button>
       </div>
       <markdown-editor
         v-if="!isViewer"
         ref="markdownEditor"
         class="markdown-editor"
-        height="calc(100vh - 151px)"
+        height="calc(88.5vh - 50px)"
         :value="content"
       />
 
@@ -44,6 +45,7 @@ import Viewer from './components/Viewer'
 import MarkdownEditor from '../article/components/MarkdownEditor'
 import Upload from '../article/components/upload'
 import { fetchArticle, updateArticle } from '@/api/article'
+import { changeToArticle } from '@/api/note'
 
 export default {
   name: 'Note',
@@ -53,6 +55,7 @@ export default {
   data() {
     return {
       loading: false,
+      loading2: false,
       isViewer: true,
       title: '',
       content: null,
@@ -162,6 +165,21 @@ export default {
         this.content = this.$refs['markdownEditor'].getValue()
       }
       this.isViewer = !this.isViewer
+    },
+    async changeToArticle() {
+      const noteData = {
+        title: this.title,
+        editorType: this.editorModel,
+        articleType: 'note'
+      }
+      this.loading2 = true
+      if (this.articleId) {
+        noteData.id = this.articleId
+        noteData.content = this.$refs['markdownEditor'].getValue()
+        const res = await changeToArticle(noteData)
+        if (res) this.$tips(res)
+        this.loading2 = false
+      }
     }
   }
 }
@@ -185,7 +203,6 @@ export default {
 }
 .markdown-editor {
   width: 100%;
-  height: calc(100vh - 151px);
   position: relative;
   background-color: #f0f2f5;
 }
