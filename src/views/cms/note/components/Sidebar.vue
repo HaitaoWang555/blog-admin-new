@@ -133,9 +133,9 @@ export default {
       if (!this.filterText) return
       this.noteList = JSON.parse(JSON.stringify(this.noteListOld))
       this.treeFilter(this.noteList, this.filterText)
+      this.noteList = this.noteList.filter(i => i.children.length > 0)
     },
     treeFilter(list, name) {
-      // TODO
       const listLength = list.length
       for (let index = 0; index < listLength; index++) {
         if (list[index].name.indexOf(name) !== -1) {
