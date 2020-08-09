@@ -2,43 +2,43 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="searchValue.title"
+        v-model="listQuery.title"
         placeholder="可搜索名称"
         prefix-icon="el-icon-search"
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.title = null"
+        @clear="listQuery.title = null"
         @keyup.enter.native="search"
       />
       <el-input
-        v-model="searchValue.dynasty"
+        v-model="listQuery.dynasty"
         placeholder="可搜索朝代"
         prefix-icon="el-icon-search"
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.dynasty = null"
+        @clear="listQuery.dynasty = null"
         @keyup.enter.native="search"
       />
       <el-input
-        v-model="searchValue.author"
+        v-model="listQuery.author"
         placeholder="可搜索作者"
         prefix-icon="el-icon-search"
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.author = null"
+        @clear="listQuery.author = null"
         @keyup.enter.native="search"
       />
       <el-input
-        v-model="searchValue.content"
+        v-model="listQuery.content"
         placeholder="可搜索诗词内容"
         prefix-icon="el-icon-search"
         clearable
         style="width: 200px"
         class="filter-item"
-        @clear="searchValue.content = null"
+        @clear="listQuery.content = null"
         @keyup.enter.native="search"
       />
 
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import { fetchList, searchList, delPoetry, downloadList } from '@/api/poetry'
+import { searchList, delPoetry, downloadList } from '@/api/poetry'
 import Pagination from '@/components/Pagination'
 import Poetry from './poetry'
 
@@ -132,12 +132,6 @@ export default {
   },
   data() {
     return {
-      searchValue: {
-        title: null,
-        dynasty: null,
-        author: null,
-        content: null
-      },
       buttonArray: [
         {
           label: '新增',
@@ -166,7 +160,11 @@ export default {
       total: 0,
       listQuery: {
         pageNum: 1,
-        pageSize: 20
+        pageSize: 20,
+        title: null,
+        dynasty: null,
+        author: null,
+        content: null
       },
       dialog: false,
       dialogTitle: '',
@@ -180,24 +178,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      let res = null
-      let isHaveKeyword = false
-      for (const key in this.searchValue) {
-        if (this.searchValue.hasOwnProperty(key)) {
-          const element = this.searchValue[key]
-          if (element) {
-            isHaveKeyword = true
-            this.listQuery[key] = element
-          } else {
-            this.listQuery[key] = null
-          }
-        }
-      }
-      if (isHaveKeyword) {
-        res = await searchList(this.listQuery)
-      } else {
-        res = await fetchList(this.listQuery)
-      }
+      const res = await searchList(this.listQuery)
       if (!res) {
         this.listLoading = false
         return
@@ -205,11 +186,7 @@ export default {
       const data = res.data
       const list = data.list
       this.list = list
-      if (isHaveKeyword) {
-        this.total = data.total > 10000 ? 10000 : data.total
-      } else {
-        this.total = data.total
-      }
+      this.total = data.total && data.total === -1 ? 10000 : data.total
 
       this.listLoading = false
     },

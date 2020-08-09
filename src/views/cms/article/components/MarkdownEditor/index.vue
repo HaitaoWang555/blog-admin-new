@@ -204,7 +204,7 @@ export default {
   right: 15px;
   top: 2px;
   width: 20px;
-  height: 20px;
+  height: 20px!important;
   font-size: 18px;
   color: #333333;
   cursor: pointer;
