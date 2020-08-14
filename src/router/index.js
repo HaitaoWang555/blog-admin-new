@@ -91,6 +91,12 @@ export const asyncRouterMap = [
         component: () => import(/* webpackChunkName: "note" */'@/views/cms/note/index'),
         name: 'note',
         meta: { itle: '笔记列表', icon: 'cms-list' }
+      },
+      {
+        path: 'comment',
+        component: () => import(/* webpackChunkName: "comment" */'@/views/cms/comment/index'),
+        name: 'comment',
+        meta: { itle: '评论列表', icon: 'cms-list' }
       }
     ]
   },
