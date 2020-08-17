@@ -15,3 +15,11 @@ export function del(ids, aids) {
     params: { ids, aids }
   })
 }
+
+export function delLink(ids) {
+  return request({
+    url: '/comment/deleteLinks',
+    method: 'post',
+    params: { ids }
+  })
+}

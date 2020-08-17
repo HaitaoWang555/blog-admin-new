@@ -31,7 +31,16 @@
         @clear="listQuery.ip = null"
         @keyup.enter.native="search"
       />
-
+      <el-input
+        v-model="listQuery.link"
+        placeholder="可搜索评论者链接"
+        prefix-icon="el-icon-search"
+        clearable
+        style="width: 200px"
+        class="filter-item"
+        @clear="listQuery.link = null"
+        @keyup.enter.native="search"
+      />
       <div class="filter-item">
         <el-button type="primary" @click="search">搜索</el-button>
         <el-button
@@ -92,6 +101,13 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column label="user_agent">
+        <template slot-scope="scope">
+          <span>
+            {{ initUserAgent(scope.row.userAgent) }}
+          </span>
+        </template>
+      </el-table-column>
 
       <el-table-column width="250px" sortable label="评论时间">
         <template slot-scope="scope">
@@ -114,8 +130,11 @@
 </template>
 
 <script>
-import { searchList, del } from '@/api/comment'
+import { searchList, del, delLink } from '@/api/comment'
 import Pagination from '@/components/Pagination'
+import UAParser from 'ua-parser-js'
+
+const uaParser = new UAParser()
 
 export default {
   name: 'CommentList',
@@ -128,6 +147,11 @@ export default {
         {
           label: '批量删除',
           value: 'del',
+          color: '#ff7a7b'
+        },
+        {
+          label: '批量删除评论链接',
+          value: 'delLink',
           color: '#ff7a7b'
         }
       ],
@@ -175,6 +199,15 @@ export default {
             this.getList()
           })()
           break
+        case 'delLink':
+          (async() => {
+            const ids = this.multipleSelection.map(i => i.id).join(',')
+            const res = await delLink(ids)
+            if (!res) return
+            this.$tips(res)
+            this.getList()
+          })()
+          break
         default:
           break
       }
@@ -194,6 +227,11 @@ export default {
       const sortBy = columnVal + ' ' + order
       this.listQuery.sortBy = sortBy
       this.getList()
+    },
+    initUserAgent(val) {
+      if (!val) return
+      const result = uaParser.setUA(val).getResult()
+      return result.browser.name + ' ' + result.os.name + ' ' + result.engine.name + ' ' + result.cpu.architecture
     }
   }
 }
