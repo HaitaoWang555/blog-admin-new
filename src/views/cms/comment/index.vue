@@ -231,7 +231,7 @@ export default {
     initUserAgent(val) {
       if (!val) return
       const result = uaParser.setUA(val).getResult()
-      return result.browser.name + ' ' + result.os.name + ' ' + result.engine.name + ' ' + result.cpu.architecture
+      return result.browser.name + ' ' + result.os.name + ' ' + result.engine.name + ' ' + (result.cpu.architecture || '')
     }
   }
 }

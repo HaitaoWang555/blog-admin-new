@@ -105,8 +105,7 @@ export default {
       const noteData = {
         title: this.title,
         editorType: this.editorModel,
-        articleType: 'note',
-        content: this.content
+        articleType: 'note'
       }
       this.loading = true
       if (this.articleId) {
@@ -150,8 +149,9 @@ export default {
           }
         })
       }
-      if (this.content) {
-        this.$refs['markdownEditor'].setValue(this.content + '\n' + value)
+      const oldContent = this.$refs['markdownEditor'].getValue()
+      if (oldContent) {
+        this.$refs['markdownEditor'].setValue(oldContent + '\n' + value)
       } else {
         this.$refs['markdownEditor'].setValue(value)
       }
