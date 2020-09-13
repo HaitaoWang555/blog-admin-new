@@ -95,9 +95,10 @@
 
       <el-table-column min-width="300px" label="标题">
         <template slot-scope="scope">
-          <a :href="frontUrl + 'article/' + scope.row.id" target="/article/" class="link-type">
+          <a v-if="scope.row.status === 'publish'" :href="frontUrl + 'article/' + scope.row.id" target="/article/" class="link-type">
             <span>{{ scope.row.title }}</span>
           </a>
+          <span v-else>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="120px" label="分类">
