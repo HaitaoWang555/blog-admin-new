@@ -5,6 +5,7 @@
       <div class="filter-container">
         <div class="filter-item">标题：</div>
         <el-input v-model="title" class="filter-item" clearable style="width: 300px" />
+        <div class="filter-item">浏览量：{{ hits }} </div>
         <el-button class="filter-item" type="primary" @click="changeModel">{{ isViewer ? '编辑' : '预览' }}</el-button>
         <el-button v-show="!isViewer" class="filter-item" type="primary" @click="upload">上传文章</el-button>
         <el-button v-show="!isViewer" :loading="loading" class="filter-item" type="primary" @click="save">保存</el-button>
@@ -58,6 +59,7 @@ export default {
       loading2: false,
       isViewer: true,
       title: '',
+      hits: 0,
       content: null,
       articleId: null,
       noteId: null,
@@ -97,6 +99,7 @@ export default {
       if (res.data) {
         this.title = res.data.title
         this.content = res.data.content
+        this.hits = res.data.hits
         this.$refs['markdownEditor'].setValue(this.content)
         this.$refs['markdownEditor'].goTop()
       }
