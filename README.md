@@ -42,7 +42,7 @@ npm install node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sas
 # 安装依赖
 npm install --registry=https://registry.npm.taobao.org
 # 更改配置文件 .env.development VUE_APP_PROXY_TARGET 可选
- 
+VUE_APP_PROXY_TARGET = 'https://blog.wanghaitao.club/' # 使用线上接口
 # 本地开发 启动项目
 npm run dev
 ```
