@@ -167,10 +167,10 @@ export default {
         if (type === 'file' && value.slice(value.lastIndexOf('.')) !== '.md') value = value + '.md'
         this.noteMenu.name = value
         addMenu(this.noteMenu).then(res => {
+          this.closeMenu()
           if (!res) return
           this.updateTree(res.data)
           this.$tips(res)
-          this.closeMenu()
         })
       }).catch(() => { this.closeMenu() })
     },
@@ -346,10 +346,10 @@ export default {
         cancelButtonText: '取消'
       }).then(({ value }) => {
         updateMenu(this.tag.id, value).then(res => {
+          this.closeMenu()
           if (!res) return
           this.treeUpdateName(this.noteList, this.tag.id, value)
           this.$tips(res)
-          this.closeMenu()
         })
       }).catch(() => { this.closeMenu() })
     },
