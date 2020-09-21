@@ -186,7 +186,9 @@ export default {
       const data = res.data
       const list = data.list
       this.list = list
-      this.total = data.total && data.total === -1 || data.total > 10000 ? 10000 : data.total
+      if (list && list.length > 0) {
+        this.total = data.total && data.total === -1 || data.total > 10000 ? 10000 : data.total
+      }
 
       this.listLoading = false
     },

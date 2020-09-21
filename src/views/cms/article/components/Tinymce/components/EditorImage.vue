@@ -62,7 +62,6 @@ export default {
       }
     },
     handleUpload(option) {
-      if (!option.data) return
       const formData = new FormData()
       if (option.data) {
         Object.keys(option.data).forEach(function(key) {

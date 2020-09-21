@@ -10,18 +10,39 @@
       style="max-width: 420px; margin: 0 auto"
     >
 
-      <el-form-item label="诗词名称" prop="title">
-        <el-input v-model="poetry.title" />
-      </el-form-item>
-      <el-form-item label="朝代" prop="dynasty">
-        <el-input v-model="poetry.dynasty" />
-      </el-form-item>
-      <el-form-item label="作者" prop="author">
-        <el-input v-model="poetry.author" />
-      </el-form-item>
-      <el-form-item label="诗词内容" prop="content">
-        <el-input v-model="poetry.content" type="textarea" />
-      </el-form-item>
+      <template v-if="poetry.moudle !== 'import'">
+
+        <el-form-item label="诗词名称" prop="title">
+          <el-input v-model="poetry.title" />
+        </el-form-item>
+        <el-form-item label="朝代" prop="dynasty">
+          <el-input v-model="poetry.dynasty" />
+        </el-form-item>
+        <el-form-item label="作者" prop="author">
+          <el-input v-model="poetry.author" />
+        </el-form-item>
+        <el-form-item label="诗词内容" prop="content">
+          <el-input v-model="poetry.content" type="textarea" />
+        </el-form-item>
+      </template>
+      <template v-else>
+        <el-form-item label-width="0" prop="excel" class="upload-container">
+          <el-input v-model="poetry.excel" type="hidden" />
+          <el-upload
+            ref="upload"
+            drag
+            :on-change="handleChange"
+            :auto-upload="false"
+            action="xx"
+            :http-request="handleUpload"
+            multiple
+          >
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div slot="tip" class="el-upload__tip">文件不能超过25M 仅支持csv文件</div>
+          </el-upload>
+        </el-form-item>
+      </template>
       <el-form-item label-width="0" style="text-align: center">
         <el-button
           v-if="poetry.moudle === 'add'"
@@ -29,6 +50,12 @@
           type="primary"
           @click="submitForm('poetry')"
         >提交</el-button>
+        <el-button
+          v-if="poetry.moudle === 'import'"
+          :loading="loading"
+          type="primary"
+          @click="submitForm('poetry')"
+        >确认导入</el-button>
         <el-button
           v-if="poetry.moudle === 'edit'"
           :loading="loading"
@@ -42,10 +69,10 @@
 </template>
 
 <script>
-import { create, update } from '@/api/poetry'
+import { create, update, importPoetry } from '@/api/poetry'
 
 export default {
-  name: 'Meta',
+  name: 'PoetryDialog',
   props: {
     poetry: {
       type: Object,
@@ -66,10 +93,13 @@ export default {
     return {
       formRules: {
         title: [
-          { required: true, message: '请输入诗词名称', trigger: 'blur' }
+          { required: true, message: '请输入诗词名称', trigger: 'blur' },
+          { max: 50, message: '长度不能超50个字符', trigger: 'blur' }
         ],
         dynasty: [
-          { required: true, message: '请输入朝代', trigger: 'blur' }
+          { required: true, message: '请输入朝代', trigger: 'blur' },
+          { max: 10, message: '长度不能超10个字符', trigger: 'blur' }
+
         ],
         author: [
           { required: true, message: '请输入作者', trigger: 'blur' },
@@ -96,6 +126,9 @@ export default {
               break
             case 'edit':
               this.edit(this.poetry)
+              break
+            case 'import':
+              this.import()
               break
             default:
               break
@@ -128,6 +161,39 @@ export default {
       this.loading = false
       this.close()
       this.change()
+    },
+    import() {
+      this.$refs.upload.submit()
+    },
+    handleUpload(option) {
+      console.log(option)
+      const formData = new FormData()
+      if (option.data) {
+        Object.keys(option.data).forEach(function(key) {
+          formData.append(key, option.data[key])
+        })
+      }
+      formData.append(option.filename, option.file, option.file.name)
+      return importPoetry(formData, option).then(res => {
+        this.loading = false
+        this.$tips(res)
+        if (!res) return
+        this.close()
+        this.change()
+      })
+    },
+    handleChange(file, fileList) {
+      if (file) {
+        if (file.status === 'ready') {
+          this.poetry.excel = 'ready'
+        } else if (file.status === 'fail') {
+          this.loading = false
+          this.$message({
+            message: '上传失败',
+            type: 'error'
+          })
+        }
+      }
     }
   }
 }

@@ -47,3 +47,16 @@ export function downloadList(ids) {
     params: { ids }
   })
 }
+export function importPoetry(list, option) {
+  return request({
+    url: '/poetry/uploadCsv',
+    method: 'post',
+    data: list,
+    onUploadProgress: e => {
+      if (e.total > 0) {
+        e.percent = e.loaded / e.total * 100
+      }
+      option.onProgress(e)
+    }
+  })
+}
