@@ -187,7 +187,7 @@ export default {
       const list = data.list
       this.list = list
       if (list && list.length > 0) {
-        this.total = data.total && data.total === -1 || data.total > 10000 ? 10000 : data.total
+        this.total = data.total && data.total === -1 ? 10000 : data.total
       } else {
         this.total = 0
       }

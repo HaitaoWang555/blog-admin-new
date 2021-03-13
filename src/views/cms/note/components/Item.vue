@@ -1,6 +1,6 @@
 <script>
 import 'file-icons-js/css/style.css'
-import FileIcons from 'file-icons-js'
+import { getClass } from 'file-icons-js'
 
 export default {
   name: 'MenuItem',
@@ -18,7 +18,7 @@ export default {
   render(h, context) {
     const { icon, title } = context.props
     const vnodes = []
-    const iconClass = FileIcons.getClass(icon.name)
+    const iconClass = getClass(icon.name)
     if (iconClass) {
       vnodes.push(<i class={(iconClass + ' el-icon-fileiconsjs')}></i>)
     } else {
