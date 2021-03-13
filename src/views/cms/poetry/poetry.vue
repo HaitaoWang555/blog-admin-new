@@ -35,6 +35,7 @@
             :auto-upload="false"
             action="xx"
             :http-request="handleUpload"
+            :file-list="fileList"
             multiple
           >
             <i class="el-icon-upload" />
@@ -109,6 +110,7 @@ export default {
           { required: true, message: '请输入诗词内容', trigger: 'blur' }
         ]
       },
+      fileList: [],
       loading: false
     }
   },
@@ -163,24 +165,26 @@ export default {
       this.change()
     },
     import() {
-      this.$refs.upload.submit()
-    },
-    handleUpload(option) {
-      console.log(option)
       const formData = new FormData()
-      if (option.data) {
-        Object.keys(option.data).forEach(function(key) {
-          formData.append(key, option.data[key])
-        })
+      if (this.fileList.length === 0) {
+        this.$message({ message: '请选择文件', type: 'warning' })
+        this.loading = false
+        return
       }
-      formData.append(option.filename, option.file, option.file.name)
-      return importPoetry(formData, option).then(res => {
+      for (let index = 0; index < this.fileList.length; index++) {
+        const element = this.fileList[index]
+        formData.append('file', element.raw)
+      }
+      importPoetry(formData).then(res => {
         this.loading = false
         this.$tips(res)
         if (!res) return
         this.close()
         this.change()
       })
+    },
+    handleUpload() {
+
     },
     handleChange(file, fileList) {
       if (file) {
@@ -194,6 +198,7 @@ export default {
           })
         }
       }
+      this.fileList = fileList
     }
   }
 }

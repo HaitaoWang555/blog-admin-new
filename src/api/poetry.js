@@ -56,7 +56,7 @@ export function importPoetry(list, option) {
       if (e.total > 0) {
         e.percent = e.loaded / e.total * 100
       }
-      option.onProgress(e)
+      if (option) option.onProgress(e)
     }
   })
 }
