@@ -253,7 +253,10 @@ export default {
     },
     async export() {
       const ids = this.multipleSelection.map(i => i.id).join(',')
-
+      if (!ids) {
+        this.$message({ message: '请选择导出文件', type: 'error' })
+        return
+      }
       const response = await downloadList(ids)
       this.downloadFile(response)
     },
