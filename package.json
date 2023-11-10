@@ -17,7 +17,7 @@
   "dependencies": {
     "@toast-ui/editor": "^2.2.0",
     "@toast-ui/editor-plugin-code-syntax-highlight": "^1.0.0",
-    "axios": "0.18.1",
+    "axios": "1.6.0",
     "clipboard": "^2.0.6",
     "element-ui": "^2.13.2",
     "file-icons-js": "github:websemantics/file-icons-js",
